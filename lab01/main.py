@@ -1,13 +1,17 @@
-from csv import reader as csv_reader
+import json
 
 adj_list = []
 max_node_i = 0
 
-with open("input.csv", encoding="utf-8") as input_file:
-    for line in csv_reader(input_file.readlines()[1:]):
-        origin, dest = int(line[0]), int(line[1])
-        adj_list.append((origin, dest))
-        max_node_i = max(max_node_i, dest, origin)
+with open("./lab01/input.json", encoding="utf-8") as input_file:
+    data = json.load(input_file)
+    
+    for node in data["nodes"].keys():
+        origin = int(node)
+        for dest in data["nodes"][node]:
+            dest = int(dest)
+            adj_list.append((origin, dest))
+            max_node_i = max(max_node_i, dest, origin)
     
 adj_matrix = [[0 for _ in range(max_node_i + 1)] for _ in range(max_node_i + 1)]
 

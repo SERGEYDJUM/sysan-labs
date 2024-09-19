@@ -2,7 +2,7 @@ import csv
 import sys
 
 
-class GraphRelationships:
+class TreeRelationships:
     def __init__(self, csv_string: str):
         adj_list = []
         max_node_id = 0
@@ -71,7 +71,7 @@ class GraphRelationships:
 
 
 def main(csv_input: str) -> str:
-    return GraphRelationships(csv_input).get_relationships()
+    return TreeRelationships(csv_input).get_relationships()
 
 
 if __name__ == "__main__":

@@ -55,9 +55,9 @@ class TreeRelationships:
                 if peer != child:
                     self.peers[child].add(peer)
 
-    def get_relationships(self) -> str:
+    def get_relationships(self) -> list[list[int]]:
         self._dfs(0)
-        output = ""
+        output = []
         for node in range(self.node_count):
             r1 = len(self.children[node])
             r2 = len(self.parents[node])
@@ -65,15 +65,19 @@ class TreeRelationships:
             r4 = len(self.ancestors[node]) - r2
             r5 = len(self.peers[node])
 
-            output += f"{r1},{r2},{r3},{r4},{r5}\n"
+            output.append([r1, r2, r3, r4, r5])
 
         return output
 
 
 def main(csv_input: str) -> str:
-    return TreeRelationships(csv_input).get_relationships()
+    return "\n".join(
+        ", ".join(map(str, row))
+        for row in TreeRelationships(csv_input).get_relationships()
+    )
 
 
 if __name__ == "__main__":
-    with open("task2.csv", encoding="utf-8", mode="r") as csv_file:
+    with open("assets/task2.csv", encoding="utf-8", mode="r") as csv_file:
+        print("Матрица отношений (отношения по столбцам)")
         print(main(csv_file.read()))

@@ -3,7 +3,7 @@ import json
 adj_list = []
 max_node_i = 0
 
-with open("./lab01/input.json", encoding="utf-8") as input_file:
+with open("assets/task1.json", encoding="utf-8") as input_file:
     data = json.load(input_file)
     
     for node in data["nodes"].keys():

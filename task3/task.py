@@ -1,9 +1,9 @@
-import task2
+import task2.task as task
 from math import log2, isclose
 
 
 def main(csv_input: str) -> str:
-    rels = task2.TreeRelationships(csv_input).get_relationships()
+    rels = task.TreeRelationships(csv_input).get_relationships()
     objects_cnt = len(rels)
 
     h = 0.0

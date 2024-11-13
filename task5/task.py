@@ -1,33 +1,32 @@
 import json
 
 
-def load_mat(path: str) -> list[list[bool]]:
-    with open(path, encoding="utf-8") as json_file:
-        data = json.load(json_file)
-        elements = []
+def load_mat(json_s: str) -> list[list[bool]]:
+    data = json.loads(json_s)
+    elements = []
 
-        for element in data:
-            if isinstance(element, int):
-                elements.append(element)
-            else:
-                elements.extend(element)
+    for element in data:
+        if isinstance(element, int):
+            elements.append(element)
+        else:
+            elements.extend(element)
 
-        mat = [[True for _ in range(len(elements))] for _ in range(len(elements))]
+    mat = [[True for _ in range(len(elements))] for _ in range(len(elements))]
 
-        for element in data:
-            if isinstance(element, int):
-                i = elements.index(element)
-                for j in elements[:i]:
-                    mat[j - 1][element - 1] = False
-            else:
-                imn = elements.index(min(element))
-                imx = elements.index(max(element))
+    for element in data:
+        if isinstance(element, int):
+            i = elements.index(element)
+            for j in elements[:i]:
+                mat[j - 1][element - 1] = False
+        else:
+            imn = elements.index(min(element))
+            imx = elements.index(max(element))
 
-                for k in elements[imn : imx + 1]:
-                    for j in elements[:imn]:
-                        mat[j - 1][k - 1] = False
+            for k in elements[imn : imx + 1]:
+                for j in elements[:imn]:
+                    mat[j - 1][k - 1] = False
 
-        return mat
+    return mat
 
 
 def mat_logmul(A, B):
@@ -46,9 +45,9 @@ def mat_tlogadd(A):
     return C
 
 
-if __name__ == "__main__":
-    A = load_mat("assets/task5_1.json")
-    B = load_mat("assets/task5_2.json")
+def main(json_s1: str, json_s2: str) -> str:
+    A = load_mat(json_s1)
+    B = load_mat(json_s2)
 
     C = mat_logmul(A, B)
     D = mat_tlogadd(C)
@@ -60,4 +59,11 @@ if __name__ == "__main__":
             if (j, i) not in conflicts:
                 conflicts.add((i, j))
 
-    print(json.dumps([[c[0]+1, c[1]+1] for c in conflicts]))
+    return json.dumps([[c[0] + 1, c[1] + 1] for c in conflicts])
+
+
+if __name__ == "__main__":
+    with open("assets/task5_1.json", encoding="utf-8") as json1, open(
+        "assets/task5_2.json", encoding="utf-8"
+    ) as json2:
+        print(main(json1.read(), json2.read()))

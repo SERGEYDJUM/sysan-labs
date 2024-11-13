@@ -79,5 +79,4 @@ def main(csv_input: str) -> str:
 
 if __name__ == "__main__":
     with open("assets/task2.csv", encoding="utf-8", mode="r") as csv_file:
-        print("Матрица отношений (отношения по столбцам)")
         print(main(csv_file.read()))

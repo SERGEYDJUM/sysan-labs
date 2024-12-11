@@ -1,28 +1,28 @@
-from collections import defaultdict
 from math import isclose, log2
+from itertools import chain
+from typing import Iterable
+import csv
 
 
-def arr_entropy(arr: list[float]) -> float:
+def entropy(arr: Iterable[float]) -> float:
     return -sum(x * log2(x) for x in arr if not isclose(x, 0))
 
 
+def load_mat() -> list[list[int]]:
+    with open("assets/условная-энтропия-данные.csv", encoding="utf-8") as csv_reader:
+        csv_reader = csv.reader(csv_reader)
+        _ = next(csv_reader)
+        return [[int(x) for x in line[1:]] for line in csv_reader]
+
+
 def main() -> list[float]:
-    dice_probs = dict([(x, 1 / 6) for x in range(1, 7)])
+    M = load_mat()
+    m_sum = sum(sum(row) for row in M)
+    M = [[el / m_sum for el in row] for row in M]
 
-    A_probs = defaultdict(float)
-    B_probs = defaultdict(float)
-    AB_probs = defaultdict(float)
-
-    for x, px in dice_probs.items():
-        for y, py in dice_probs.items():
-            xy_p = px * py
-            A_probs[x + y] += xy_p
-            B_probs[x * y] += xy_p
-            AB_probs[(x + y, x * y)] += xy_p
-
-    E_A = arr_entropy(A_probs.values())
-    E_B = arr_entropy(B_probs.values())
-    E_AB = arr_entropy(AB_probs.values())
+    E_A = entropy(map(sum, M))
+    E_B = entropy(map(sum, map(list, zip(*M))))
+    E_AB = entropy(chain(*M))
     E_BifA = E_AB - E_A
     I_AB = E_A + E_B - E_AB
 

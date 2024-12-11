@@ -66,10 +66,12 @@ def task(temp_f: str, control_f: str, rules_f: str, temp: float) -> float:
     return s
 
 
+main = task
+
 if __name__ == "__main__":
     with open("assets/функция-отображения.json", encoding="utf-8") as rules_f, open(
         "assets\функции-принадлежности-управление.json", encoding="utf-8"
     ) as control_f, open(
         "assets\функции-принадлежности-температуры.json", encoding="utf-8"
     ) as temp_f:
-        print(task(temp_f.read(), control_f.read(), rules_f.read(), 19))
+        print(main(temp_f.read(), control_f.read(), rules_f.read(), 19))
